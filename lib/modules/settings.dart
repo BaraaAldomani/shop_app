@@ -15,7 +15,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..isEnglish,
+      create: (context) => AppCubit(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) => {},
         builder: (context, state) {

@@ -13,21 +13,18 @@ import 'modules/login/login_screen.dart';
 import 'shared/components/constants.dart';
 
 void main() {
+  BlocOverrides.runZoned(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
 
-    BlocOverrides.runZoned(
-          () {
-            WidgetsFlutterBinding.ensureInitialized();
-
-            DioHelper.init();
-          CacheHelper.init();
-            runApp(MyApp());
-        // Use blocs...
-      },
-      blocObserver: MyBlocObserver(),
-    );
-  }
-
-
+      DioHelper.init();
+      await CacheHelper.init();
+      runApp(MyApp());
+      // Use blocs...
+    },
+    blocObserver: MyBlocObserver(),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -46,7 +43,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: cubit.isDark ? darkTheme() : lightThemeData(),
-            home: RegisterScreen(),
+            home: ShopLayout(),
           );
         },
       ),

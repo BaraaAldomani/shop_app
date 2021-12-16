@@ -32,18 +32,4 @@ class AppCubit extends Cubit<AppStates> {
     isFav = !isLike;
     emit(AppChangeFavStates());
   }
-
-  //pick Image
-  final ImagePicker _imagePicker = ImagePicker();
-  late File image1;
-  bool photoIsTake = false;
-
-  Future getImage(ImageSource source) async {
-    final image = await _imagePicker.pickImage(source: source);
-    if (image == null) return;
-    final imageTemporary = File(image.path);
-    image1 = imageTemporary;
-    photoIsTake = true;
-    emit(AppUserGetImageStates());
-  }
 }

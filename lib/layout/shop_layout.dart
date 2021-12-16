@@ -103,12 +103,7 @@ class _ShopLayoutState extends State<ShopLayout> {
               actions: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      // cubit.changeIsSearch(cubit.isSearching);
-                    },
-                    child: SearchBar(),
-                  ),
+                  child: SearchBar(),
                 ),
               ],
             ),
