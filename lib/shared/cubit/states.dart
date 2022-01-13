@@ -7,3 +7,4 @@ class AppUserGetImageStates extends AppStates{}
 class AppChangeLanguageStates extends AppStates{}
 class AppChangeIsSearchStates extends AppStates{}
 class AppChangeThemeStates extends AppStates{}
+

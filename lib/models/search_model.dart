@@ -1,17 +1,17 @@
-class ProductsModel {
+class SearchModel {
   final bool? status;
   final String? errNum;
   final String? msg;
   final List<Data>? data;
 
-  ProductsModel({
+  SearchModel({
     this.status,
     this.errNum,
     this.msg,
     this.data,
   });
 
-  ProductsModel.fromJson(Map<String, dynamic> json)
+  SearchModel.fromJson(Map<String, dynamic> json)
       : status = json['status'] as bool?,
         errNum = json['errNum'] as String?,
         msg = json['msg'] as String?,
@@ -29,10 +29,10 @@ class Data {
   final int? id;
   final String? name;
   final String? image;
-  final String? expiretionDate;
-  final dynamic price;
   final int? views;
   final int? likesCounts;
+  final String? expiretionDate;
+  final dynamic price;
   final dynamic pricePro;
   final bool? isLike;
 
@@ -40,10 +40,10 @@ class Data {
     this.id,
     this.name,
     this.image,
-    this.expiretionDate,
-    this.price,
     this.views,
     this.likesCounts,
+    this.expiretionDate,
+    this.price,
     this.pricePro,
     this.isLike,
   });
@@ -52,10 +52,10 @@ class Data {
       : id = json['id'] as int?,
         name = json['name'] as String?,
         image = json['image'] as String?,
-        expiretionDate = json['expiretion_date'] as String?,
-        price = json['price'] as dynamic,
         views = json['views'] as int?,
         likesCounts = json['likes_counts'] as int?,
+        expiretionDate = json['expiretion_date'] as String?,
+        price = json['price'] as dynamic,
         pricePro = json['pricePro'] as dynamic,
         isLike = json['is_like'] as bool?;
 
@@ -63,10 +63,10 @@ class Data {
     'id' : id,
     'name' : name,
     'image' : image,
-    'expiretion_date' : expiretionDate,
-    'price' : price,
     'views' : views,
     'likes_counts' : likesCounts,
+    'expiretion_date' : expiretionDate,
+    'price' : price,
     'pricePro' : pricePro,
     'is_like' : isLike
   };

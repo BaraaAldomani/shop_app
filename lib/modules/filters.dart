@@ -23,154 +23,156 @@ class _FiltersState extends State<Filters> {
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (context, state) => {},
         builder: (context, state) {
-          AppCubit cubit = AppCubit.get(context);
-          return AlertDialog(
-            backgroundColor: Colors.blue[200],
-            title: Center(
-              child: Text(
-                'Filters',
-                style: TextStyle(color: Colors.blue[900]),
+          return Directionality(
+            textDirection: AppCubit.get(context).isEnglish? TextDirection.ltr:TextDirection.rtl,
+            child: AlertDialog(
+              backgroundColor: Colors.blue[200],
+              title: Center(
+                child: Text(
+                  'Filters',
+                  style: TextStyle(color: Colors.blue[900]),
+                ),
               ),
-            ),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                dividerInfo(),
-                ListTile(
-                  title: Text(filterCategoryController.text),
-                  leading: IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) => Container(
-                                color: Colors.blue[900]?.withOpacity(0.1),
-                                child: Dialog(
-                                  child: SizedBox(
-                                    height: 200,
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          activeColor: Colors.blue[900],
-                                          title: Text('Canned'),
-                                          value: 1,
-                                          groupValue: valueRadio,
-                                          onChanged: (dynamic value) {
-                                            setState(() {
-                                              valueRadio = value.hashCode;
-                                              filterCategoryController.text =
-                                                  'Canned';
-                                              Navigator.of(context).pop();
-                                            });
-                                          },
-                                        ),
-                                        RadioListTile(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  dividerInfo(context),
+                  ListTile(
+                    title: Text(filterCategoryController.text),
+                    leading: IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => Container(
+                                  color: Colors.blue[900]?.withOpacity(0.1),
+                                  child: Dialog(
+                                    child: SizedBox(
+                                      height: 200,
+                                      child: Column(
+                                        children: [
+                                          RadioListTile(
                                             activeColor: Colors.blue[900],
-                                            title: Text('Vegetable'),
-                                            value: 2,
+                                            title: Text('Canned'),
+                                            value: 1,
                                             groupValue: valueRadio,
                                             onChanged: (dynamic value) {
                                               setState(() {
+                                                valueRadio = value.hashCode;
                                                 filterCategoryController.text =
-                                                    'vegetable';
-                                                valueRadio = value.hashCode;
+                                                    'Canned';
                                                 Navigator.of(context).pop();
                                               });
-                                            }),
-                                        RadioListTile(
-                                          activeColor: Colors.blue[900],
-                                          title: Text('Fruit'),
-                                          value: 3,
-                                          groupValue: valueRadio,
-                                          onChanged: (dynamic value) {
-                                            setState(() {
-                                              valueRadio = value.hashCode;
-                                              filterCategoryController.text =
-                                                  'Fruit';
-                                              Navigator.of(context).pop();
-                                            });
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ));
-                    },
-                    icon: Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                      color: Colors.blue[900],
-                    ),
-                  ),
-                ),
-                ListTile(
-                  title: Text(filterExpController.text),
-                  leading: IconButton(
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (_) => Container(
-                                color: Colors.blue[900]?.withOpacity(0.1),
-                                child: Dialog(
-                                  child: SizedBox(
-                                    height: 200,
-                                    child: Column(
-                                      children: [
-                                        RadioListTile(
-                                          activeColor: Colors.blue[900],
-                                          title: Text('a -> A'),
-                                          value: 1,
-                                          groupValue: valueRadio,
-                                          onChanged: (dynamic value) {
-                                            setState(() {
-                                              valueRadio = value.hashCode;
-                                              filterExpController.text =
-                                                  'a -> A';
-                                              Navigator.of(context).pop();
-                                            });
-                                          },
-                                        ),
-                                        RadioListTile(
+                                            },
+                                          ),
+                                          RadioListTile(
+                                              activeColor: Colors.blue[900],
+                                              title: Text('Vegetable'),
+                                              value: 2,
+                                              groupValue: valueRadio,
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  filterCategoryController.text =
+                                                      'vegetable';
+                                                  valueRadio = value.hashCode;
+                                                  Navigator.of(context).pop();
+                                                });
+                                              }),
+                                          RadioListTile(
                                             activeColor: Colors.blue[900],
-                                            title: Text('A -> a'),
-                                            value: 2,
+                                            title: Text('Fruit'),
+                                            value: 3,
                                             groupValue: valueRadio,
                                             onChanged: (dynamic value) {
                                               setState(() {
-                                                filterExpController.text =
-                                                    'A -> a';
                                                 valueRadio = value.hashCode;
+                                                filterCategoryController.text =
+                                                    'Fruit';
                                                 Navigator.of(context).pop();
                                               });
-                                            }),
-                                      ],
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ));
-                    },
-                    icon: Icon(
-                      Icons.arrow_drop_down_circle_outlined,
-                      color: Colors.blue[900],
+                                ));
+                      },
+                      icon: Icon(
+                        Icons.arrow_drop_down_circle_outlined,
+                        color: Colors.blue[900],
+                      ),
                     ),
                   ),
-                ),
-                Container(
-                  width: 200,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: Colors.blue[900],
-                      borderRadius: BorderRadius.circular(5)),
-                  child: MaterialButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
+                  ListTile(
+                    title: Text(filterExpController.text),
+                    leading: IconButton(
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (_) => Container(
+                                  color: Colors.blue[900]?.withOpacity(0.1),
+                                  child: Dialog(
+                                    child: SizedBox(
+                                      height: 200,
+                                      child: Column(
+                                        children: [
+                                          RadioListTile(
+                                            activeColor: Colors.blue[900],
+                                            title: Text('a -> A'),
+                                            value: 1,
+                                            groupValue: valueRadio,
+                                            onChanged: (dynamic value) {
+                                              setState(() {
+                                                valueRadio = value.hashCode;
+                                                filterExpController.text =
+                                                    'a -> A';
+                                                Navigator.of(context).pop();
+                                              });
+                                            },
+                                          ),
+                                          RadioListTile(
+                                              activeColor: Colors.blue[900],
+                                              title: Text('A -> a'),
+                                              value: 2,
+                                              groupValue: valueRadio,
+                                              onChanged: (dynamic value) {
+                                                setState(() {
+                                                  filterExpController.text =
+                                                      'A -> a';
+                                                  valueRadio = value.hashCode;
+                                                  Navigator.of(context).pop();
+                                                });
+                                              }),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ));
+                      },
+                      icon: Icon(
+                        Icons.arrow_drop_down_circle_outlined,
+                        color: Colors.blue[900],
+                      ),
                     ),
                   ),
-                )
-              ],
+                  Container(
+                    width: 200,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: Colors.blue[900],
+                        borderRadius: BorderRadius.circular(5)),
+                    child: MaterialButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        'Submit',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         },

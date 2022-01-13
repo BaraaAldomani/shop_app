@@ -1,16 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-List <Map> comment = [
-  {'id': '1', 'comment': 'woooow this is great'},
-  {'id': '2', 'comment': 'good Item'},
-  {'id': '3', 'comment': 'thx you mr baraa'},
-  {'id': '4', 'comment': 'I will come again later'},
-  {'id': '4', 'comment': 'I will come again later'},
-  {'id': '4', 'comment': 'I will come again later'},
-  {'id': '4', 'comment': 'I will come again later'},
-  {'id': '4', 'comment': 'I will come again later'},
-  {'id': '4', 'comment': 'I will come again later'},
-] ;
+late String token;
 class MyBlocObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {

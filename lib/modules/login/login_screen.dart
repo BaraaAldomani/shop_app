@@ -7,7 +7,10 @@ import 'package:shop_app/layout/shop_layout.dart';
 import 'package:shop_app/modules/login/cubit/cubit.dart';
 import 'package:shop_app/modules/login/cubit/states.dart';
 import 'package:shop_app/modules/register/register_screen.dart';
+import 'package:shop_app/network/local/cache_helper.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/components/constants.dart';
+import 'package:shop_app/shared/cubit/cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -24,20 +27,23 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is ShopLoginSuccessStates) {
             if (state.loginModel.status) {
-              print(state.loginModel.token);
-              print(state.loginModel.message);
-
-              Fluttertoast.showToast(
-                      msg: state.loginModel.message.toString(),
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIosWeb: 1,
-                      backgroundColor: Colors.green)
-                  .then((value) {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ShopLayout()));
+              CacheHelper.saveData(
+                  key: 'isLogin', value: state.loginModel.token).then((value) {
+                    token = state.loginModel.token!;
+              }).then((value){
+                Fluttertoast.showToast(
+                    msg: state.loginModel.message.toString(),
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green)
+                    .then((value) {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => ShopLayout()));
+                });
               });
-            } else if (state.loginModel.status) {
+
+            } else if (!state.loginModel.status) {
               print(state.loginModel.message.toString());
               Fluttertoast.showToast(
                   msg: state.loginModel.message.toString(),
@@ -61,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                       Text(
                         'Login',
                         style: TextStyle(
-                            color: Colors.blue[900],
+                            color:AppCubit.get(context).isDark? Colors.white:  Colors.blue[900],
                             fontSize: 50,
                             fontWeight: FontWeight.bold),
                       ),
@@ -69,6 +75,7 @@ class LoginScreen extends StatelessWidget {
                         height: 100,
                       ),
                       defaultTextField(
+                          context: context,
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           label: 'Email Address',
@@ -84,6 +91,7 @@ class LoginScreen extends StatelessWidget {
                         height: 20,
                       ),
                       defaultTextField(
+                        context: context,
                         controller: passwordController,
                         keyboardType: TextInputType.visiblePassword,
                         label: 'password',
@@ -109,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(5),
-                          color: Colors.blue[900],
+                          color:AppCubit.get(context).isDark?Colors.black:  Colors.blue[900],
                         ),
                         child: MaterialButton(
                           child: state is! ShopLoginLoadingStates
@@ -125,9 +133,6 @@ class LoginScreen extends StatelessWidget {
                                   email: emailController.text,
                                   password: passwordController.text);
 
-                              // Navigator.of(context).pushReplacement(
-                              //     MaterialPageRoute(
-                              //         builder: (context) => ShopLayout()));
 
                             }
                           },
@@ -144,13 +149,13 @@ class LoginScreen extends StatelessWidget {
                           ),
                           TextButton(
                             onPressed: () {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                   MaterialPageRoute(
                                       builder: (context) => RegisterScreen()));
                             },
                             child: Text(
                               'Register',
-                              style: TextStyle(color: Colors.blue[900]),
+                              style: TextStyle(color:AppCubit.get(context).isDark?Colors.white:  Colors.blue[900]),
                             ),
                           ),
                         ],

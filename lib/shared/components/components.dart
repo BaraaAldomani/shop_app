@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shop_app/layout/shop_layout.dart';
+import 'package:shop_app/layout/cubit/cubit.dart';
+import 'package:shop_app/layout/cubit/states.dart';
+import 'package:shop_app/models/list_comment_model.dart';
 import 'package:shop_app/modules/filters.dart';
 import 'package:shop_app/modules/info_item_screen.dart';
-import 'constants.dart';
+import 'package:shop_app/shared/cubit/cubit.dart';
 
 Widget defaultTextField({
+  required BuildContext context,
   required TextEditingController controller,
   required TextInputType keyboardType,
   required String label,
@@ -37,17 +40,22 @@ Widget defaultTextField({
       onFieldSubmitted: onSubmit,
       validator: validate,
       autofocus: false,
+      style: TextStyle(
+          color:
+              AppCubit.get(context).isDark ? Colors.white : Colors.blue[900]),
       decoration: InputDecoration(
         hintText: hint,
         label: Text(
           label,
-          style:
-              TextStyle(color: Colors.blue[900], fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: AppCubit.get(context).isDark
+                  ? Colors.white
+                  : Colors.blue[900],
+              fontWeight: FontWeight.w600),
         ),
-        prefixIcon: Icon(
-          prefixIcon,
-          color: Colors.blue[900],
-        ),
+        prefixIcon: Icon(prefixIcon,
+            color:
+                AppCubit.get(context).isDark ? Colors.white : Colors.blue[900]),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(border!),
@@ -55,22 +63,27 @@ Widget defaultTextField({
       ),
     );
 
-Widget info({required String key, required value}) => Padding(
+Widget info({required String key, required value, context}) => Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text(key, style: TextStyle(color: Colors.blue[900])),
-          SizedBox(
-            width: 30,
-          ),
+          Text(key,
+              style: TextStyle(
+                  color: AppCubit.get(context).isDark
+                      ? Colors.white
+                      : Colors.blue[900])),
+          Spacer(),
           Container(
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
                 value,
                 overflow: TextOverflow.visible,
-                style: TextStyle(color: Colors.blue[900]),
+                style: TextStyle(
+                    color: AppCubit.get(context).isDark
+                        ? Colors.black
+                        : Colors.blue[900]),
               ),
             ),
             decoration: BoxDecoration(
@@ -80,43 +93,53 @@ Widget info({required String key, required value}) => Padding(
       ),
     );
 
-Widget commentI({required String key, required String value}) => Padding(
-    padding: EdgeInsets.all(10),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        CircleAvatar(
-          child: Text(key),
-          maxRadius: 20,
-          backgroundColor: Colors.blue[900],
-        ),
-        SizedBox(
-          width: 20,
-        ),
-        Container(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(value),
-          ),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Colors.black.withOpacity(0.09)),
-        )
-      ],
-    ));
+Widget commentI(
+        {required String key,
+        required String value,
+        required BuildContext context}) =>
+    Padding(
+        padding: EdgeInsets.all(10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CircleAvatar(
+              child: Text(
+                key,
+                style: TextStyle(color: Colors.white),
+              ),
+              maxRadius: 20,
+              backgroundColor: AppCubit.get(context).isDark
+                  ? Colors.black
+                  : Colors.blue[900],
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(value,style: TextStyle(color: AppCubit.get(context).isDark?Colors.white:Colors.blue[900]), overflow: TextOverflow.ellipsis , maxLines: 50,),
+              ),
+            )
+          ],
+        ));
 
-Widget dividerInfo() => Divider(
-      color: Colors.blue[900]?.withOpacity(0.5),
+Widget dividerInfo(context) => Divider(
+      color: AppCubit.get(context).isDark
+          ? Colors.white.withOpacity(0.5)
+          : Colors.blue[900]?.withOpacity(0.5),
       thickness: 1,
       indent: 30,
       endIndent: 30,
     );
 
-void commentInfo(context) {
+void commentInfo(context, int index, ListComments list) {
   showModalBottomSheet(
       context: context,
-      builder: (context) => Container(
-            color: Colors.blue[300]?.withOpacity(0.2),
+      builder: (_) => Container(
+            color: AppCubit.get(context).isDark
+                ? Colors.black.withOpacity(0.6)
+                : Colors.blue[300]?.withOpacity(0.2),
             child: SizedBox(
               width: double.infinity,
               height: 500,
@@ -125,12 +148,19 @@ void commentInfo(context) {
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: defaultTextField(
+                        context: context,
                         suffixIcon: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: IconButton(
                             onPressed: () {
+                              ShopLayoutCubit.get(context).createCommentById(
+                                  id: ShopLayoutCubit.get(context)
+                                      .productsModel
+                                      .data![index]
+                                      .id!,
+                                  comment: commentController.text);
                               commentController.clear();
                               FocusScopeNode currentFocus =
                                   FocusScope.of(context);
@@ -138,7 +168,12 @@ void commentInfo(context) {
                                 currentFocus.unfocus();
                               }
                             },
-                            icon: Icon(Icons.send, color: Colors.blue[900]),
+                            icon: Icon(
+                              Icons.send,
+                              color: AppCubit.get(context).isDark
+                                  ? Colors.white
+                                  : Colors.blue[900],
+                            ),
                           ),
                         ),
                         border: 50,
@@ -149,10 +184,11 @@ void commentInfo(context) {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: comment.length,
+                      itemCount: list.data.length,
                       itemBuilder: (context, index) => commentI(
-                          key: comment[index]['id'],
-                          value: comment[index]['comment']),
+                          context: context,
+                          key: '${list.data[index].sellerId}',
+                          value: '${list.data[index].comment}'),
                     ),
                   ),
                 ],
@@ -179,23 +215,13 @@ void searchInfo(context) {
                           child: ListView.separated(
                             physics: BouncingScrollPhysics(),
                             itemCount: 10,
-                            separatorBuilder: (context, index) => dividerInfo(),
+                            separatorBuilder: (context, index) =>
+                                dividerInfo(context),
                             itemBuilder: (context, index) => GestureDetector(
                                 onTap: () {
                                   Navigator.of(context).push(MaterialPageRoute(
                                       builder: (context) => InfoItemScreen(
-                                            userName: 'omar alhakeem',
-                                            category: 'Canned',
-                                            price: 2000,
-                                            quantity: 25,
-                                            userEmail:
-                                                'barddddddddddddaa@gmail.com',
-                                            userNumber: '+9630930716527',
-                                            exp: '20 - 10 - 2040',
-                                            image:
-                                                'https://media.istockphoto.com/photos/orange-picture-id185284489',
-                                            itemName: 'Orange',
-                                            viewNum: 10,
+                                            id: 5,
                                           )));
                                 },
                                 child: Container(

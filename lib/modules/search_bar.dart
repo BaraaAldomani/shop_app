@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shop_app/shared/components/components.dart';
+import 'package:shop_app/shared/cubit/cubit.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key}) : super(key: key);
@@ -32,7 +33,8 @@ class _SearchBarState extends State<SearchBar>
       width: (toggle == 0) ? 48.0 : 325.0,
       curve: Curves.easeIn,
       decoration: BoxDecoration(
-        color: Colors.blue[700],
+        color:AppCubit.get(context).isDark? Colors.black :Colors.blue[700]
+          ?.withOpacity(0.5),
         borderRadius: BorderRadius.circular(30.0),
         boxShadow: [
           BoxShadow(
@@ -120,7 +122,7 @@ class _SearchBarState extends State<SearchBar>
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.never,
-                        labelText: 'Search...',
+                        labelText: AppCubit.get(context).getText('search_something')!,
                         labelStyle: TextStyle(
                           color: Colors.white,
                           fontSize: 17.0,
@@ -147,7 +149,9 @@ class _SearchBarState extends State<SearchBar>
                 iconSize: 25,
                 icon: Icon(
                   Icons.search,
-                  color: Colors.blue[900],
+                  color: AppCubit.get(context).isDark
+                      ? Colors.black
+                      : Colors.blue[900],
                 ),
                 onPressed: () {
                   setState(

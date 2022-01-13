@@ -6,29 +6,33 @@ class DioHelper {
   static init() {
     dio = Dio(
       BaseOptions(
-          baseUrl: 'http://192.168.1.101:8000/api/',
-          receiveDataWhenStatusError: true,
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-          }),
+        baseUrl: 'http://192.168.1.104:8000/api/',
+        receiveDataWhenStatusError: true,
+      ),
     );
   }
 
   static Future<Response> postData({
     required String url,
-    required Map<String, dynamic> data,
+    required dynamic data,
     String? token,
   }) async {
-    dio.options.headers = {'Authorization': token};
+
+    dio.options.headers = {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
     return await dio.post(url, data: data);
   }
 
-  Future<Response<dynamic>> getData(
-      {required String url,
-      required Map<String, dynamic> data,
-      String? token}) async {
-    dio.options.headers = {'Authorization': token};
+  static Future<Response<dynamic>> getData(
+      {required String url, Map<String, dynamic>? data, String? token}) async {
+    dio.options.headers = {
+      'Authorization': 'Bearer $token',
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
     return await dio.get(url);
   }
 }
